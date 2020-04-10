@@ -82,10 +82,14 @@ class SearchForm extends React.Component {
             <input type="submit" value="Submit" />
           </form>
           {items.map((item) => (
-            <ul style={{ listStyleType: "none" }}>
-              <li key={item.name}>Name: {item.name}</li>
+            <ul key={item.id} style={{ listStyleType: "none" }}>
+              <li>Name: {item.name}</li>
               <li key={item.album.name}>Album name: {item.album.name}</li>
               <li key={item.duration_ms}>Duration: {item.duration_ms}</li>
+              <img
+                key={item.album.images[2].url}
+                src={item.album.images[2].url}
+              />
             </ul>
           ))}
         </div>
