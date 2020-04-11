@@ -34,28 +34,31 @@ class SearchForm extends React.Component {
       });
     } else {
       this.setState({ query, loading: true, message: "" }, () => {
-        fetch(`${apiEndpoint}/search?track=${query}`)
-          .then((res) => res.json())
-          .then(
-            (result) => {
-              console.log(result);
-              this.setState({
-                loading: false,
-                items: result,
-              });
-            },
-            (error) => {
-              console.log(error);
-              this.setState({
-                loading: false,
-                error,
-              });
-            }
-          );
+        this.fetchQueryResults(query);
       });
     }
 
     this.setState({ query, loading: true });
+  }
+
+  fetchQueryResults(query) {
+    fetch(`${apiEndpoint}/search?track=${query}`)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            loading: false,
+            items: result,
+          });
+        },
+        (error) => {
+          console.log(error);
+          this.setState({
+            loading: false,
+            error,
+          });
+        }
+      );
   }
 
   render() {
