@@ -1,0 +1,43 @@
+{
+  "name": "create-record",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/tsc && cp -r node_modules dist",
+    "build:ci": "./node_modules/.bin/tsc",
+    "clean": "rm -rf ./node_modules && rm -rf ./dist",
+    "lint": "npm run lint:src && npm run lint:test",
+    "lint:src": "./node_modules/.bin/tslint src/**/*.ts",
+    "lint:test": "./node_modules/.bin/tslint test/**/*.ts",
+    "sam:build": "npm run build && aws cloudformation package --template-file ./infrastructure/template.yaml --s3-bucket $CFT_BUCKET --s3-prefix $STACK_NAME/$(basename $(pwd)) --output-template-file ./infrastructure/template.package.yaml",
+    "test": "npm run test:unit",
+    "test:unit": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -R spec --watch-extensions spec.ts,ts -r ts-node/register -r tsconfig-paths/register -r source-map-support/register $(pwd)/test/unit/**/*.spec.ts --recursive"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.7.0",
+    "typescript": "^3.7.5",
+    "@types/aws-lambda": "^8.10.46",
+    "@types/aws-sdk": "^2.7.0",
+    "@types/chai": "^4.2.4",
+    "@types/mocha": "^5.2.7",
+    "@types/sinon": "^7.5.0",
+    "aws-sdk-mock": "^4.5.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
+    "sinon": "^7.5.0",
+    "ts-node": "^8.4.1",
+    "tsconfig-paths": "^3.9.0",
+    "tslint": "^5.20.0",
+    "typemoq": "^2.1.0"
+  },
+  "dependencies": {
+    "@DillonSykes/lambda-event": "^1.0.0",
+    "inversify": "^5.0.1",
+    "aws-lambda": "^1.0.5"
+  }
+}

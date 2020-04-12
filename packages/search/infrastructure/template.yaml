@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  MemorySize:
+    Type: String
+    Default: 128
+
+Resources:
+  SearchFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: nodejs10.x
+      CodeUri: ./../dist
+      Timeout: 30
+      Handler: handler.handler
+      FunctionName: !Sub ${AWS::StackName}
+      Tracing: "Active"
+      MemorySize: !Ref MemorySize
+      Environment:
+        Variables:
+          SPOTIFY_CLIENT_ID: 0b5931db66b742709630cfab611b3f4d
+          SPOTIFY_CLIENT_SECRET: '{{resolve:ssm:spotify-secret-key:1}}'
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: AllAtOnce
+      Policies:
+        Statement:
+          - Effect: Allow
+            Action:
+              - logs:PutLogEvents
+              - logs:CreateLogStream
+              - logs:CreateLogGroup
+            Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*
+
+  SearchFunctionPermission:
+    Type: AWS::Lambda::Permission
+    DependsOn: [SearchFunction]
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SearchFunction
+      Principal: apigateway.amazonaws.com
+
+Outputs:
+  SearchFunctionFunctionFunctionArn:
+    Value: !GetAtt SearchFunction.Arn
