@@ -1,0 +1,33 @@
+{
+  "lintOptions": {
+    "typeCheck": true
+  },
+  "extends": "tslint:recommended",
+  "rules": {
+    "no-console": {
+      "options": ["info", "time", "timeEnd", "trace"]
+    },
+    "object-literal-shorthand": false,
+    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": [true, "as-needed"],
+    "ordered-imports": false,
+    "variable-declaration": false,
+    "member-access": false,
+    "typedef": [
+      true,
+      "call-signature",
+      "arrow-call-signature",
+      "parameter",
+      "property-declaration",
+      "member-variable-declaration"
+    ],
+    "variable-name": ["allow-snake-case"],
+    "arrow-parens": false,
+    "array-type": false,
+    "one-line": false,
+    "no-var-requires": false,
+    "no-empty-interface": false,
+    "interface-over-type-literal": false,
+    "no-string-literal": false
+  }
+}
