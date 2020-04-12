@@ -1,24 +1,12 @@
 import { APIGatewayEvent, Context, Callback } from "aws-lambda";
-import { Manager } from "./manager";
-import { Controller } from "./controller";
-import { LambdaEvent } from "@DillonSykes/lambda-event";
-import { PostContainer } from "./container";
+import { SearchContainer } from "./container";
+import { LambdaEvent } from "./controller/lambda-event";
 
-export async function handler(
-  event: APIGatewayEvent,
-  context: Context,
-  callback: Callback
-): Promise<void> {
-  const body = event.body;
-  console.log(body);
-
+export async function handler(event: APIGatewayEvent): Promise<void> {
   const lambdaEvent = new LambdaEvent(event);
-  const container = new PostContainer().bind();
+  const container = await new SearchContainer().bind();
 
-  const controller = container.getController();
+  const controller = await container.getController();
 
-  await controller;
-
-  controller.createRecord(lambdaEvent);
-  callback(null, body);
+  return await controller.search(lambdaEvent);
 }
